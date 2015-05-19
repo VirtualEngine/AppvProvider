@@ -1,0 +1,106 @@
+TOPIC
+	App-V Provider
+
+SYNOPSIS
+	The App-V provider is a OneGet/Windows Package Management provider for Microsoft
+    Application Virtualization (App-V) v5.x.
+
+DESCRIPTION
+    The App-V provider can install and uninstall Microsoft App-V v5.x packages
+    from local and/or remote directory paths with a behaviour that is is consistent
+    with all other Microsoft OneGet/Package Management providers.
+    
+    The App-V provider project is an open-source implementation of a Micrsoft
+    Application Virtualization (App-V) 5.x provider for OneGet/Microsoft Package
+    Management Powershell module(s). More information on the open-source OneGet
+    project can be found online: https://github.com/oneget/oneget.
+    
+REGISTERING PACKAGE SOURCE(S)
+    The App-V provider will search local directories and/or network file shares
+    for available packages. Each individual directory or file share needs to be
+    registered in the provider before it can be used.
+    
+    Provider locations are added with the Register-PackageSource cmdlet and
+    require a name to also be provided. To register a network file share with a
+    reference name of 'Demo' use the following command:
+    
+    Register-PackageSource -Name Demo -Location \\Server\Share -ProviderName AppV 
+    
+    The location parameter has to be a Powershell File System provider path.
+    HTTP/S streaming end-points/locations are NOT currently supported.
+
+DISCOVERING APP-V APPLICATIONS
+    Once an App-V provider package source has been registered, it can be queried
+    for available packages by using the Find-Package cmdlet. By default, the
+    App-V provider implements wildcard pattern matching for application names.
+    Searching for Chrome will return packages matching 'GoogleChrome', 'xChrome'
+    and 'ChromeDriver2'.
+
+    To query all registered package sources for packages containing the search
+    term 'Chrome', run the following command:
+
+    Find-Package -Name Chrome
+
+    To query all registered package sources for packages containing either the
+    'Chrome' or 'Firefox' search terms, run the following command:
+
+    Find-Package -Name Chrome,Firefox
+
+    However, this will return all matching packages. To restrict the search
+    scope to just App-V packages, the Find-Package cmdlet can be filter by the
+    provider name. To query for all available App-V packages use the following
+    command:
+
+    Find-Package -ProviderName AppV
+    
+    To restrict the query to only App-V packages with either 'Chrome' or
+    'Firefox' in the name, filter the scope with the following command:
+
+    Find-Package -Name Chrome,Firefox -ProviderName AppV
+    
+INSTALLING APP-V APPLICATIONS
+    Installing applications is achieved by the OneGet Install-Package cmdlet. One
+    or more packages can be specified with the -Name parameter or piped into
+    Install-Package from the Find-Package cmdlet.
+
+    Find-Package -Name Chrome -ProviderName AppV | Install-Package
+
+    The Install-Package cmdlet supports the same filtering options as the
+    Find-Package cmdlet. For example, you can filter on the name and/or the
+    provider name.
+
+    The App-V provider also implements some App-V specific package installation
+    parameters, implementing the -Global and -Mount switches.
+
+    The -Mount switch parameter will mount the package in the App-V client
+    cache after the package is registered. Without this option, the application
+    will be streamed over the network upon first use.
+
+    Install-Package -Name Chrome -ProviderName AppV -Mount
+
+    By default, the App-V provider will only publish applications to the user
+    running the Install-Package cmdlet - this is typically an administrator
+    account. To publish the application globally (to all users), include the
+    -Global switch parameter.
+
+    Install-Package -Name Chrome,Firefox -ProviderName AppV -Global
+
+    You can combine the -Mount and -Global switches in the same command.
+
+    Install-Package -Name Firefox -ProviderName AppV -Global -Mount
+
+UNINSTALLING APP-V APPLICATIONS
+    
+
+DEREGISTERING PACKAGE SOURCE(S)
+    Removing registered package sources requires running the 
+    Unregister-PackageSource cmdlet. This cmdlet requires the package source name
+    and the provider name that is was registered with.
+    
+    To remove the 'Demo' App-V provider package source registered above, use the
+    following command:
+    
+    Unregister-PackageSource -Name Demo -ProviderName AppV
+    
+    The OneGet implementation supports the removal of package sources using
+    the -Location parameter. This is NOT currently supported by the App-V provider.
