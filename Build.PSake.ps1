@@ -35,7 +35,8 @@ Task Setup {
     Set-Variable manifest -Value (Get-ModuleManifest) -Scope Script;
     Set-Variable buildPath -Value (Join-Path -Path $psake.build_script_dir -ChildPath "$buildDir\$($manifest.Name)") -Scope Script;
     Set-Variable releasePath -Value (Join-Path -Path $psake.build_script_dir -ChildPath $releaseDir) -Scope Script;
-    Set-Variable version -Value (Get-GitVersionString) -Scope Script;
+    $newModuleVersion = New-Object -TypeName System.Version -ArgumentList $manifest.Version.Major, $manifest.Version.Minor,$manifest.Version.Build,(Get-GitRevision);
+    Set-Variable version -Value ($newModuleVersion.ToString()) -Scope Script;
 
     Write-Host (' Building module "{0}".' -f $manifest.Name) -ForegroundColor Yellow;
     Write-Host (' Using Git version "{0}".' -f $version) -ForegroundColor Yellow;
@@ -102,7 +103,7 @@ Task Release {
     ## Create a Github release
     $githubApiKey = (New-Object System.Management.Automation.PSCredential 'OAUTH', (Get-Content -Path $githubTokenPath | ConvertTo-SecureString)).GetNetworkCredential().Password;
     Write-Host (' Creating new Github "{0}" release in repository "{1}/{2}".' -f $version, $githubOwner, $manifest.Name) -ForegroundColor Yellow;
-    #$release = New-GitHubRelease -Version $version -Repository $manifest.Name -Owner $githubOwner -ApiKey $githubApiKey;
+    $release = New-GitHubRelease -Version $version -Repository $manifest.Name -Owner $githubOwner -ApiKey $githubApiKey;
     if ($release) {
         ## Creates the release files in the $releaseDir
         $zipReleaseName = '{0}-v{1}.zip' -f $manifest.Name, $version;
