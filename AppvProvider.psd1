@@ -13,7 +13,7 @@
             Tags = @('VirtualEngine','Powershell','OneGet','Appv','App-V');
             LicenseUri = 'https://raw.githubusercontent.com/VirtualEngine/AppvProvider/master/LICENSE';
             ProjectUri = 'https://github.com/VirtualEngine/AppvProvider';
-            IconUri = 'https://raw.githubusercontent.com/VirtualEngine/AppvProvider/b0d3234d050d9be087a088afd95a15c744d76cea/appv_oneget.png';
+            IconUri = 'https://raw.githubusercontent.com/VirtualEngine/AppvProvider/master/appv_oneget.png';
         } # End of PSData hashtable
     };
 }

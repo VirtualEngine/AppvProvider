@@ -10,7 +10,7 @@ Properties {
     $thumbprint = 'D10BB31E5CE3048A7D4DA0A4DD681F05A85504D3';
     $timeStampServer = 'http://timestamp.verisign.com/scripts/timestamp.dll';
     $company = 'Virtual Engine';
-    $author = 'Iain Brighton';
+    $author = 'Iain Brighton, Nathan Sperry';
     $githubOwner = 'VirtualEngine';
     $githubTokenPath = '~\Github.apitoken';
     $chocolateyTokenPath = '~\Chocolatey.apitoken';
