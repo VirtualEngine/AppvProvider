@@ -135,6 +135,6 @@ Task Chocolatey {
         $nugetPackagePath = Join-Path -Path $releasePath -ChildPath ('{0}.{1}.nupkg' -f $manifest.Name.ToLower(), $version);
         Write-Host (' Chocolatey package "{0}" created.' -f $nugetPackagePath) -ForegroundColor Yellow;
         $chocolateyApiKey = (New-Object System.Management.Automation.PSCredential 'OAUTH', (Get-Content -Path $chocolateyTokenPath | ConvertTo-SecureString)).GetNetworkCredential().Password;
-        Write-Host (' Pushing Chocolatey package "{0}".' -f $nugetPackagePath) -ForegroundColor Yellow;
+        Write-Host (' MANUAL: Push Chocolatey package "{0}".' -f $nugetPackagePath) -ForegroundColor Yellow;
     }
 }
