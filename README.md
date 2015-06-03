@@ -13,9 +13,9 @@ the [latest experimental OneGet](https://www.microsoft.com/en-us/download/detail
 * Microsoft's Application Virtualization (App-V) 5.x client.
 
 ## Getting Started
-Once you have the prerequisites installed, you can install the OneGet App-V Provider via Chocolatey (if permitted) by running the following Powershell command:
+Once you have the prerequisites installed, you can install the OneGet App-V Provider via the Powershell Gallery by running the following Powershell command:
 
-> `Install-Package AppvProvider -ProviderName chocolatey`
+> `Install-Module AppvProvider`
 
 You can also manually download and install the OneGet App-V Provider by performing the following:
 
