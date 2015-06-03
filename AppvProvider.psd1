@@ -6,7 +6,7 @@
     Description = 'Powershell OneGet/Package Management Provider for App-V 5.x'
     Copyright = 'Copyright (c) 2015 Virtual Engine Limited. All rights reserved.';
     PowerShellVersion = '3.0';
-    RequiredModules = @('PackageManagement','AppvClient');
+    RequiredModules = @('AppvClient');
     PrivateData = @{
         PackageManagementProviders = 'AppvProvider.psm1';
         PSData = @{
