@@ -1,12 +1,11 @@
 @{
-    ModuleVersion = '0.6.1';
+    ModuleVersion = '0.6.2';
     GUID = 'efea3f79-595c-4eda-82fa-7cf72a3d85ac';
     Author = 'Iain Brighton, Nathan Sperry';
     CompanyName = 'Virtual Engine';
     Description = 'Powershell OneGet/Package Management Provider for App-V 5.x'
     Copyright = 'Copyright (c) 2015 Virtual Engine Limited. All rights reserved.';
     PowerShellVersion = '3.0';
-    RequiredModules = @('AppvClient');
     PrivateData = @{
         PackageManagementProviders = 'AppvProvider.psm1';
         PSData = @{
