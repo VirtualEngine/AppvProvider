@@ -1,5 +1,5 @@
 @{
-    ModuleVersion = '0.6.0';
+    ModuleVersion = '0.6.1';
     GUID = 'efea3f79-595c-4eda-82fa-7cf72a3d85ac';
     Author = 'Iain Brighton, Nathan Sperry';
     CompanyName = 'Virtual Engine';

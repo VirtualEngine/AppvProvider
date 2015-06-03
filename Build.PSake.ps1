@@ -19,7 +19,7 @@ Properties {
 Task Default -Depends Build;
 Task Build -Depends Clean, Setup, Deploy;
 Task Stage -Depends Build, Version, Sign, Zip;
-Task Publish -Depends Stage, Release, Chocolatey;
+Task Publish -Depends Stage, Release;
 
 Task Clean {
     ## Remove build directory
@@ -111,30 +111,5 @@ Task Release {
         Write-Host (' Uploading asset "{0}".' -f $zipPath) -ForegroundColor Yellow;
         $asset = Invoke-GitHubAssetUpload -Release $release -ApiKey $githubApiKey -Path $zipPath;
         Set-Variable -Name assetUri -Value $asset.Browser_Download_Url -Scope Script -Force;
-    }
-}
-
-Task Chocolatey {
-    Set-Variable chocolateyBuildPath -Value (Join-Path -Path $psake.build_script_dir -ChildPath "$buildDir\Chocolatey") -Scope Script;
-    ## Create the Chocolatey folder
-    Write-Host (' Creating Chocolatey directory "{0}".' -f $chocolateyBuildPath) -ForegroundColor Yellow;
-    [Ref] $null = New-Item $chocolateyBuildPath -ItemType Directory -Force -ErrorAction Stop;
-    $chocolateyToolsPath = New-Item "$chocolateyBuildPath\tools" -ItemType Directory -Force -ErrorAction Stop;
-
-    ## Create the Chocolatey package
-    $nuspecFilename = '{0}.nuspec' -f $manifest.Name;
-    $nuspecPath = Join-Path -Path $chocolateyBuildPath -ChildPath $nuspecFilename;
-    Write-Host (' Creating Nuget specification "{0}".' -f $nuspecPath) -ForegroundColor Yellow;
-    (New-NuGetNuspec -InputObject $manifest).Save($nuspecPath);
-    
-    Write-Host ' Creating Chocolatey install files.' -ForegroundColor Yellow;
-    New-ChocolateyInstallZipModule -Path $chocolateyToolsPath.FullName -PackageName $manifest.Name -Uri $assetUri;
-    Write-Host (' Creating Nuget package from "{0}".' -f $nuspecPath) -ForegroundColor Yellow;
-    $nugetOutput = Invoke-NuGetPack -Path $nuspecPath -DestinationPath $releasePath;
-    if ($nugetOutput) {
-        $nugetPackagePath = Join-Path -Path $releasePath -ChildPath ('{0}.{1}.nupkg' -f $manifest.Name.ToLower(), $version);
-        Write-Host (' Chocolatey package "{0}" created.' -f $nugetPackagePath) -ForegroundColor Yellow;
-        $chocolateyApiKey = (New-Object System.Management.Automation.PSCredential 'OAUTH', (Get-Content -Path $chocolateyTokenPath | ConvertTo-SecureString)).GetNetworkCredential().Password;
-        Write-Host (' MANUAL: Push Chocolatey package "{0}".' -f $nugetPackagePath) -ForegroundColor Yellow;
     }
 }
